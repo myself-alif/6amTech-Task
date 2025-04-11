@@ -21,4 +21,5 @@ register_activation_hook(__FILE__, ['SixamTech\Activator', 'activate']);
 
 new SixamTech\Admin\Settings();
 new SixamTech\Frontend\WelcomeMessage();
+new SixamTech\Api\CreateAPI();
 new SixamTech\Admin\Contacts();
