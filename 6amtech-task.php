@@ -17,8 +17,8 @@ if (file_exists(__DIR__ . '/vendor/autoload.php')) {
 }
 
 
-register_activation_hook(__FILE__, array('SixamTech\Miscellaneous', 'create_table'));
-register_uninstall_hook(__FILE__, array('SixamTech\Miscellaneous', 'delete_table'));
+register_activation_hook(__FILE__, array('SixamTech\Activator', 'create_table'));
+
 add_action("wp_enqueue_scripts", "load_frontend_css");
 
 

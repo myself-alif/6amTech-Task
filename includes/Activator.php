@@ -2,7 +2,7 @@
 
 namespace SixamTech;
 
-class Miscellaneous
+class Activator
 {
     public static function create_table()
     {
@@ -21,19 +21,5 @@ class Miscellaneous
             PRIMARY KEY  (id)
         ) $charset_collate;";
         dbDelta($sql);
-    }
-
-    public function delete_table()
-    {
-        global $wpdb;
-
-        // Table name (use WordPress table prefix)
-        $table_name =  'contact_list';
-
-        // Delete the custom table
-        $sql = "DROP TABLE IF EXISTS $table_name";
-
-        // Run the query to delete the table
-        $wpdb->query($sql);
     }
 }
