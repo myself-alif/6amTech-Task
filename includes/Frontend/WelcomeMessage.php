@@ -11,10 +11,8 @@ class WelcomeMessage
     public function prepend_welcome_message($content)
     {
         if (is_single() && is_main_query()) {
-
             $message = get_option('sixamtech_task_welcome_message', '');
             if (!empty($message)) {
-
                 $alignment = get_option('sixamtech_task_text_align', 'left');
                 $color = get_option('sixamtech_task_text_color', '#000000');
                 $bg_color = get_option('sixamtech_task_bg_color', '#dddddd');
@@ -24,7 +22,6 @@ class WelcomeMessage
                 return '<div class="sixamtech-welcome-message" ' . $style . '>' . esc_html($message) . '</div>' . $content;
             }
         }
-
         return $content;
     }
 }

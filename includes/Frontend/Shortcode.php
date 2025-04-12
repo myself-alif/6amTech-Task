@@ -8,23 +8,17 @@ class Shortcode
     {
         add_shortcode('sixamtech_contacts', array($this, 'render_contacts_list'));
     }
-
     public function render_contacts_list()
     {
         global $wpdb;
-
         $table_name = 'contact_list';
         $per_page = 5;
-
         $current_page = isset($_GET['contact_page']) ? max(1, intval($_GET['contact_page'])) : 1;
         $offset = ($current_page - 1) * $per_page;
-
         $total = $wpdb->get_var("SELECT COUNT(*) FROM $table_name");
-
         $contacts = $wpdb->get_results(
             $wpdb->prepare("SELECT * FROM $table_name ORDER BY id ASC LIMIT %d OFFSET %d", $per_page, $offset)
         );
-
         ob_start();
 ?>
 <div class="wrap">
@@ -58,7 +52,6 @@ class Shortcode
             </tbody>
         </table>
     </div>
-
     <?php
             $total_pages = ceil($total / $per_page);
             if ($total_pages > 1) { ?>

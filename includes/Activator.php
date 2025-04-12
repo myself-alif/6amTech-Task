@@ -9,7 +9,6 @@ class Activator
         global $wpdb;
         $table = 'contact_list';
         $charset_collate = $wpdb->get_charset_collate();
-        //Create table
         require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
         $sql = "CREATE TABLE $table (
             id mediumint(9) NOT NULL AUTO_INCREMENT,
