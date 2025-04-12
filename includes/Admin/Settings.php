@@ -21,7 +21,7 @@ class Settings
     {
         add_options_page(
             __('Welcome Message', 'sixAmTech'),
-            __('6amTech Message', 'sixAmTech'),
+            __('Welcome Message', 'sixAmTech'),
             'manage_options',
             $this->menu_slug,
             array($this, 'render_settings_page')
