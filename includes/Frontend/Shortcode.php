@@ -16,7 +16,6 @@ class Shortcode
         $table_name = 'contact_list';
         $per_page = 5;
 
-        // Use custom query param to avoid permalink conflicts
         $current_page = isset($_GET['contact_page']) ? max(1, intval($_GET['contact_page'])) : 1;
         $offset = ($current_page - 1) * $per_page;
 
@@ -66,7 +65,7 @@ class Shortcode
     <div style="text-align: center; margin-top: 20px;">
         <div>
             <?php
-                        echo paginate_links([
+                        echo paginate_links(array(
                             'base' => add_query_arg('contact_page', '%#%'),
                             'format' => '',
                             'prev_text' => __('« Prev', 'sixAmTech'),
@@ -74,7 +73,7 @@ class Shortcode
                             'total' => $total_pages,
                             'current' => $current_page,
                             'type' => 'plain'
-                        ]);
+                        ));
                         ?>
         </div>
     </div>

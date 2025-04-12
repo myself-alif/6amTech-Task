@@ -15,15 +15,16 @@ class Contacts
         $screen = get_current_screen();
 
         if ($screen->id === '6amtech-task_page_sixamtech-add-contact' or $screen->id === 'toplevel_page_sixamtech-contacts') {
+            //only adds scripts to the custom admin menu
             wp_enqueue_script("contact_script", plugins_url('/6amtech-task/assets/js/scripts.js'), array('jquery'), false, true);
             wp_localize_script('contact_script', 'API_DATA', array(
                 'nonce' => wp_create_nonce('wp_rest'),
                 'url'   => rest_url('6amTech/v1/contacts/')
             ));
-
             wp_enqueue_style('bootstrap-css', '//cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css');
             wp_enqueue_style('toastr-css', '//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css');
             wp_enqueue_script('toastr-js', '//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js', array('jquery'), null, true);
+            wp_enqueue_style('admin-style-css', plugins_url('/6amtech-task/assets/css/admin.css'), null, false);
         } else {
             return;
         }
@@ -79,7 +80,7 @@ class Contacts
 
     public function add_new_contact_page()
     {
-        echo '<div class="wrap"><h1>Add New Contact</h1>';
+        echo '<div class="wrap"><h1>' . __("Add New Contact", "sixAmTech") . '</h1>';
         $this->render_add_form();
         echo '</div>';
     }
@@ -153,14 +154,14 @@ class Contacts
     <div class="tablenav d-flex justify-content-center align-items-center">
         <div class="tablenav-pages">
             <?php
-                        echo paginate_links([
+                        echo paginate_links(array(
                             'base' => add_query_arg('paged', '%#%'),
                             'format' => '',
                             'prev_text' => __('« Prev', 'sixAmTech'),
                             'next_text' => __('Next »', 'sixAmTech'),
                             'total' => $total_pages,
                             'current' => $current_page
-                        ]);
+                        ));
                         ?>
         </div>
     </div>

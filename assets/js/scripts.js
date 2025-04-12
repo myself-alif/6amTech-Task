@@ -48,7 +48,7 @@ jQuery(document).ready(function ($) {
 
     toastr.clear();
 
-    const $toast = toastr.info(
+    const toast = toastr.info(
       `<div>
         Are you sure you want to delete this contact?<br><br>
         <button type="button" class="btn btn-danger btn-sm confirm-delete">Yes</button>
@@ -101,7 +101,6 @@ jQuery(document).ready(function ($) {
       });
   });
   //edit
-
   async function updateContact(e) {
     const formData = {
       id: parseInt($(e.currentTarget).closest("tr").find(".id").text()),

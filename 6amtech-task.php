@@ -2,7 +2,7 @@
 
 /**
  * Plugin Name: 6amTech - Task
- * Description: A custom task plugin for managing contacts.
+ * Description: Assessment project.
  * Version: 1.0
  * Author: Al Mahmud Alif
  * Text domain: sixAmTech

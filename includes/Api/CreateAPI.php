@@ -58,7 +58,7 @@ class CreateAPI
         if (!preg_match($mobile_pattern, $mobile)) {
             return new \WP_REST_Response(array(
                 'message' => 'Invalid phone number format. Please use a valid Bangladeshi phone number (e.g., 01791322247)',
-            ), 400); // Return error response with status 400
+            ), 400);
         }
 
         $result = $wpdb->update(

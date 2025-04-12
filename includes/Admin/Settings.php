@@ -30,32 +30,32 @@ class Settings
 
     public function register_settings()
     {
-        // Register welcome message
+
         register_setting($this->option_group, $this->message_option_name, array(
             'type' => 'string',
             'sanitize_callback' => 'sanitize_textarea_field',
             'default' => ''
         ));
 
-        // Register alignment
+
         register_setting($this->option_group, $this->align_option_name, array(
             'type' => 'string',
             'sanitize_callback' => array($this, 'sanitize_alignment'),
-            'default' => 'left'  // Default alignment is 'left'
+            'default' => 'left'
         ));
 
-        // Register text color
+
         register_setting($this->option_group, $this->color_option_name, array(
             'type' => 'string',
             'sanitize_callback' => 'sanitize_hex_color',
-            'default' => '#000000'  // Default text color is black (#000000)
+            'default' => '#000000'
         ));
 
         // Register background color
         register_setting($this->option_group, $this->bg_color_option_name, array(
             'type' => 'string',
             'sanitize_callback' => 'sanitize_hex_color',
-            'default' => '#dddddd'  // Default background color is light gray (#dddddd)
+            'default' => '#dddddd'
         ));
 
         add_settings_section(
@@ -65,7 +65,7 @@ class Settings
             $this->menu_slug
         );
 
-        // Fields
+
         add_settings_field(
             $this->message_option_name,
             __('Message:', 'sixAmTech'),
