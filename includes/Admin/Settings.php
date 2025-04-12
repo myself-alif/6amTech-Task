@@ -34,7 +34,7 @@ class Settings
         register_setting($this->option_group, $this->message_option_name, array(
             'type' => 'string',
             'sanitize_callback' => 'sanitize_textarea_field',
-            'default' => ''
+            'default' => 'Hello 6amTech!'
         ));
 
         // Register alignment
