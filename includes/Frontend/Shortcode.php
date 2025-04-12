@@ -16,7 +16,8 @@ class Shortcode
         $table_name = 'contact_list';
         $per_page = 5;
 
-        $current_page = isset($_GET['paged']) ? max(1, intval($_GET['paged'])) : 1;
+        // Use custom query param to avoid permalink conflicts
+        $current_page = isset($_GET['contact_page']) ? max(1, intval($_GET['contact_page'])) : 1;
         $offset = ($current_page - 1) * $per_page;
 
         $total = $wpdb->get_var("SELECT COUNT(*) FROM $table_name");
@@ -59,9 +60,6 @@ class Shortcode
         </table>
     </div>
 
-
-
-
     <?php
             $total_pages = ceil($total / $per_page);
             if ($total_pages > 1) { ?>
@@ -69,12 +67,13 @@ class Shortcode
         <div>
             <?php
                         echo paginate_links([
-                            'base' => add_query_arg('paged', '%#%'),
+                            'base' => add_query_arg('contact_page', '%#%'),
                             'format' => '',
                             'prev_text' => __('« Prev', 'sixAmTech'),
                             'next_text' => __('Next »', 'sixAmTech'),
                             'total' => $total_pages,
-                            'current' => $current_page
+                            'current' => $current_page,
+                            'type' => 'plain'
                         ]);
                         ?>
         </div>
