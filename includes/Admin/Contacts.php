@@ -21,8 +21,9 @@ class Contacts
                 'url'   => rest_url('6amTech/v1/contacts/')
             ));
 
-            wp_enqueue_style('toastr-css', 'https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css');
-            wp_enqueue_script('toastr-js', 'https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js', array('jquery'), null, true);
+            wp_enqueue_style('bootstrap-css', '//cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css');
+            wp_enqueue_style('toastr-css', '//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css');
+            wp_enqueue_script('toastr-js', '//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js', array('jquery'), null, true);
         } else {
             return;
         }
@@ -58,8 +59,20 @@ class Contacts
         );
     }
 
+    public function shortcode()
+    {
+?>
+<div class="p-3 d-flex flex-column justify-content-center align-items-center" style="gap:8px">
+    <strong><?php _e('Shortcode:', 'sixAmTech'); ?></strong>
+    <code>[sixamtech_contacts]</code>
+    <p><?php _e('Use this shortcode to display the contact list on any post or page.', 'sixAmTech'); ?></p>
+</div>
+<?php
+    }
+
     public function contacts_page()
     {
+        $this->shortcode();
         $this->render_contacts_list();
         echo '</div>';
     }
@@ -81,65 +94,86 @@ class Contacts
         $current_page = isset($_GET['paged']) ? max(1, intval($_GET['paged'])) : 1;
         $offset = ($current_page - 1) * $per_page;
 
-
         $total = $wpdb->get_var("SELECT COUNT(*) FROM $table_name");
 
         $contacts = $wpdb->get_results(
             $wpdb->prepare("SELECT * FROM $table_name ORDER BY id ASC LIMIT %d OFFSET %d", $per_page, $offset)
         );
 
+        ob_start();
+    ?>
+<div class="wrap">
+    <h1><?php _e('Contact List', 'sixAmTech'); ?></h1>
+    <table class="widefat fixed striped">
+        <thead>
+            <tr class="bg-dark">
+                <th class="font-weight-bold text-light"><?php _e('Name', 'sixAmTech'); ?></th>
+                <th class="font-weight-bold text-light"><?php _e('Email', 'sixAmTech'); ?></th>
+                <th class="font-weight-bold text-light"><?php _e('Mobile', 'sixAmTech'); ?></th>
+                <th class="font-weight-bold text-light"><?php _e('Address', 'sixAmTech'); ?></th>
+                <th class="font-weight-bold text-light"><?php _e('Actions', 'sixAmTech'); ?></th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php if (!empty($contacts)) {
+                        foreach ($contacts as $contact) { ?>
+            <tr>
+                <td class="editable id" style="display:none"><?php echo esc_html($contact->id); ?></td>
+                <td class="editable name"><?php echo esc_html($contact->name); ?></td>
+                <td class="editable email"><?php echo esc_html($contact->email); ?></td>
+                <td class="editable mobile"><?php echo esc_html($contact->mobile); ?></td>
+                <td class="editable address"><?php echo esc_html($contact->address); ?></td>
+                <td>
+                    <a href="#" class="btn btn-sm btn-primary edit-contact"
+                        data-id="<?php echo esc_attr($contact->id); ?>">
+                        <?php _e('Edit', 'sixAmTech'); ?>
+                    </a>
+                    <a href="#" class="btn btn-sm btn-success data-update" style="display:none"
+                        data-id="<?php echo esc_attr($contact->id); ?>">
+                        <?php _e('Update', 'sixAmTech'); ?>
+                    </a>
+                    <a href="#" class="btn btn-sm btn-danger delete-contact"
+                        data-id="<?php echo esc_attr($contact->id); ?>">
+                        <?php _e('Delete', 'sixAmTech'); ?>
+                    </a>
+                </td>
+            </tr>
+            <?php }
+                    } else { ?>
+            <tr>
+                <td colspan="5"><?php _e('No contacts found.', 'sixAmTech'); ?></td>
+            </tr>
+            <?php } ?>
+        </tbody>
+    </table>
 
-        echo '<div class="wrap"><h1>Contact List</h1>';
-        echo '<table class="widefat fixed striped">';
-        echo '<thead><tr><th>Name</th><th>Email</th><th>Mobile</th><th>Address</th><th>Actions</th></tr></thead>';
-        echo '<tbody>';
-
-        if (!empty($contacts)) {
-            foreach ($contacts as $contact) {
-                echo '<tr>';
-                echo '<td class="editable id" style="display:none">' . esc_html($contact->id) . '</td>';
-                echo '<td class="editable name">' . esc_html($contact->name) . '</td>';
-                echo '<td class="editable email">' . esc_html($contact->email) . '</td>';
-                echo '<td class="editable mobile">' . esc_html($contact->mobile) . '</td>';
-                echo '<td class="editable address">' . esc_html($contact->address) . '</td>';
-                echo '<td>
-                  <a href="#" class="button button-small edit-contact" data-id="' . esc_attr($contact->id) . '">';
-                _e('Edit', 'sixAmTech');
-                echo '</a>
-                  <a href="#" class="button button-small data-update" style="display:none" data-id="' . esc_attr($contact->id) . '">';
-                _e('Update', 'sixAmTech');
-                echo '</a>
-                <a href="#" class="button button-small button-danger delete-contact" data-id="' . esc_attr($contact->id) . '">';
-                _e('Delete', 'sixAmTech');
-                echo '</a>
-                    </td>';
-                echo '</tr>';
-            }
-        } else {
-            echo '<tr><td colspan="5">No contacts found.</td></tr>';
-        }
-
-        echo '</tbody></table>';
-
-        $total_pages = ceil($total / $per_page);
-        if ($total_pages > 1) {
-            echo '<div class="tablenav"><div class="tablenav-pages">';
-            echo paginate_links([
-                'base' => add_query_arg('paged', '%#%'),
-                'format' => '',
-                'prev_text' => __('« Prev'),
-                'next_text' => __('Next »'),
-                'total' => $total_pages,
-                'current' => $current_page
-            ]);
-            echo '</div></div>';
-        }
-        echo '</div>';
+    <?php
+            $total_pages = ceil($total / $per_page);
+            if ($total_pages > 1) { ?>
+    <div class="tablenav d-flex justify-content-center align-items-center">
+        <div class="tablenav-pages">
+            <?php
+                        echo paginate_links([
+                            'base' => add_query_arg('paged', '%#%'),
+                            'format' => '',
+                            'prev_text' => __('« Prev', 'sixAmTech'),
+                            'next_text' => __('Next »', 'sixAmTech'),
+                            'total' => $total_pages,
+                            'current' => $current_page
+                        ]);
+                        ?>
+        </div>
+    </div>
+    <?php } ?>
+</div>
+<?php
+        echo ob_get_clean();
     }
+
 
     private function render_add_form()
     {
-?>
+    ?>
 <form id="sixamtech-contact-form">
     <table class="form-table">
         <tr>
