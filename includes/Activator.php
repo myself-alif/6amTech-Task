@@ -6,7 +6,6 @@ class Activator
 {
     public static function create_table()
     {
-        // add_option('sixamtech_task_welcome_message', 'Welcome to our site!');
         global $wpdb;
         $table = 'contact_list';
         $charset_collate = $wpdb->get_charset_collate();
