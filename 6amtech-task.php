@@ -16,9 +16,12 @@ if (file_exists(__DIR__ . '/vendor/autoload.php')) {
     require_once __DIR__ . '/vendor/autoload.php';
 }
 
-// Activation Hook
-register_activation_hook(__FILE__, ['SixamTech\Activator', 'activate']);
+
+register_activation_hook(__FILE__, array('SixamTech\Miscellaneous', 'create_table'));
+register_uninstall_hook(__FILE__, array('SixamTech\Miscellaneous', 'delete_table'));
 add_action("wp_enqueue_scripts", "load_frontend_css");
+
+
 function load_frontend_css()
 {
     wp_enqueue_style("frontend_css", plugin_dir_url(__FILE__) . "/assets/css/frontend.css", null, false);

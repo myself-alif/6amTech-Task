@@ -2,9 +2,9 @@
 
 namespace SixamTech;
 
-class Activator
+class Miscellaneous
 {
-    public static function activate()
+    public static function create_table()
     {
         // add_option('sixamtech_task_welcome_message', 'Welcome to our site!');
         global $wpdb;
@@ -21,5 +21,19 @@ class Activator
             PRIMARY KEY  (id)
         ) $charset_collate;";
         dbDelta($sql);
+    }
+
+    public function delete_table()
+    {
+        global $wpdb;
+
+        // Table name (use WordPress table prefix)
+        $table_name =  'contact_list';
+
+        // Delete the custom table
+        $sql = "DROP TABLE IF EXISTS $table_name";
+
+        // Run the query to delete the table
+        $wpdb->query($sql);
     }
 }
