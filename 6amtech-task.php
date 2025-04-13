@@ -31,4 +31,4 @@ new SixamTech\Admin\Settings();
 new SixamTech\Frontend\WelcomeMessage();
 new SixamTech\Api\CreateAPI();
 new SixamTech\Admin\Contacts();
-new \SixamTech\Frontend\Shortcode();
+new SixamTech\Frontend\Shortcode();
